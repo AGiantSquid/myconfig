@@ -117,4 +117,4 @@ parse_git_branch() {
 }
 export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey
+alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey'
