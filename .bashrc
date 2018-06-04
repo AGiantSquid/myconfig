@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -56,12 +56,12 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
+# if [ "$color_prompt" = yes ]; then
+#     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# else
+#     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+# fi
+# unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -115,6 +115,27 @@ fi
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
-export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+if [ "$color_prompt" = yes ]; then
+ PS1='${debian_chroot:+($debian_chroot)}'
+ PS1="$PS1"'\n'                   # new line
+ PS1="$PS1"'\[\033[1;30m\]'       # change to turquoise
+ PS1="$PS1"'\u '                  # user<space>
+ PS1="$PS1"'\[\033[95m\]'         # change to gray
+ PS1="$PS1"'@debian `cat /etc/debian_version` '
+ PS1="$PS1"'\[\033[33m\]'         # change to brownish yellow
+ PS1="$PS1"'\w '                  # current working directory
+ PS1="$PS1"'\[\033[01;32m\]$(parse_git_branch)\[\033[00m\]'
+ PS1="$PS1"'\n'
+ PS1="$PS1"'$ '                   # prompt: always $
+else
+ PS1='${debian_chroot:+($debian_chroot)}\u:\w$(parse_git_branch)\$ '
+fi
+# unset color_prompt force_color_prompt
+
+
+# export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export GKT_USERNAME=test
+export GKT_SECRETKEY=test
 alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey'
