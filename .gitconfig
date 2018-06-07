@@ -1,0 +1,14 @@
+[user]
+	name = AGiantSquid
+	email = ashley@greenkeytech.com
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+    tool = meld
+[mergetool "meld"]
+    # Choose one of these 2 lines (not both!) explained below.
+    cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
