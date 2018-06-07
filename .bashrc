@@ -37,31 +37,24 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
     else
-	color_prompt=
+    color_prompt=
     fi
 fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -76,13 +69,45 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
+
+# Add git branch if its present to PS1
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+# Pretty colors are set here
+if [ "$color_prompt" = yes ]; then
+ PS1='${debian_chroot:+($debian_chroot)}'
+ PS1="$PS1"'\n'                   # new line
+ PS1="$PS1"'\[\033[1;30m\]'       # change to turquoise
+ PS1="$PS1"'\u '                  # user<space>
+ PS1="$PS1"'\[\033[95m\]'         # change to gray
+ PS1="$PS1"'@debian `cat /etc/debian_version` '
+ PS1="$PS1"'\[\033[33m\]'         # change to brownish yellow
+ PS1="$PS1"'\w '                  # current working directory
+ PS1="$PS1"'\[\033[01;32m\]$(parse_git_branch)\[\033[00m\]'
+ PS1="$PS1"'\n'
+ PS1="$PS1"'$ '                   # prompt: always $
+else
+ PS1='${debian_chroot:+($debian_chroot)}\u:\w$(parse_git_branch)\$ '
+fi
+unset color_prompt force_color_prompt
+
+# Use this if you have custom DIR_COLORS
+# `dircolors` prints out `LS_COLORS='...'; export LS_COLORS`, so eval'ing
+# $(dircolors) effectively sets the LS_COLORS environment variable.
+# eval "$(dircolors /etc/DIR_COLORS)"
+
+# fix color of 'other writable' directory
+LS_COLORS="ow=01;34;40" && export LS_COLORS
+
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -91,6 +116,8 @@ fi
 #alias ll='ls -l'
 #alias la='ls -A'
 #alias l='ls -CF'
+# needed to use git versioning on this file and others
+alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -112,9 +139,22 @@ if ! shopt -oq posix; then
   fi
 fi
 
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+
+
+# Use these settings if using debian in WSL
+#export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+#export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
+
+# For xming, displaying debian gui programs in windows host
+#export DISPLAY=localhost:0.0
+
+# Needed to run docker commands from Windows
+#export DOCKER_HOST=localhost:2375
+
+
+
+# GreenKey related stuff, add in secret key manually
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey'
+export GKT_USERNAME=test
+export GKT_SECRETKEY=test
