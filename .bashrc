@@ -117,7 +117,7 @@ LS_COLORS="ow=01;34;40" && export LS_COLORS
 #alias la='ls -A'
 #alias l='ls -CF'
 # needed to use git versioning on this file and others
-alias config='/usr/bin/git --git-dir=/home/greenkey/.myconfig/ --work-tree=/home/greenkey'
+alias config='/usr/bin/git --git-dir=/home/$USER/.myconfig/ --work-tree=/home/$USER'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -143,18 +143,19 @@ fi
 
 
 # Use these settings if using debian in WSL
-#export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-#export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
+if [ -d /c/Users ]; then
+  export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+  export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
 
-# For xming, displaying debian gui programs in windows host
-#export DISPLAY=localhost:0.0
+  # For xming, displaying debian gui programs in windows host
+  export DISPLAY=localhost:0.0
 
-# Needed to run docker commands from Windows
-#export DOCKER_HOST=localhost:2375
-
+  # Needed to run docker commands from Windows
+  export DOCKER_HOST=localhost:2375
+fi
 
 
 # GreenKey related stuff, add in secret key manually
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export GKT_USERNAME=test
-export GKT_SECRETKEY=test
+export GKT_SECRETKEY=
