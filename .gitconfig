@@ -14,5 +14,5 @@
     keepBackup = false
     prompt = false
 [core]
-	filemode = false
-	autocrlf = false
+    filemode = false
+    autocrlf = false
