@@ -11,3 +11,8 @@
     tool = meld
 [mergetool "meld"]
     cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+    keepBackup = false
+    prompt = false
+[core]
+	filemode = false
+	autocrlf = false
