@@ -119,6 +119,7 @@ LS_COLORS="ow=01;34;40" && export LS_COLORS
 # needed to use git versioning on this file and others
 alias config='/usr/bin/git --git-dir=/home/$USER/.myconfig/ --work-tree=/home/$USER'
 
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -152,8 +153,24 @@ if [ -d /c/Users ]; then
 
   # Needed to run docker commands from Windows
   export DOCKER_HOST=localhost:2375
+
+  alias sublime='"/c/Program Files/Sublime Text 3/sublime_text.exe"'
+  alias home='cd /c/Users/$USER/; ls'
+  alias green='cd /c/Users/$USER/GreenKey/; ls'
+  alias scribe='cd /c/Users/$USER/GreenKey/scribe; ls'
 fi
 
+alias d='docker'
+alias dpa='docker ps -a'
+function de() {
+  docker exec -it "$1" bash
+}
+function des() {
+  docker exec -it "$1" sh
+}
+function dk() {
+  docker kill "$1"
+}
 
 # GreenKey related stuff, add in secret key manually
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
