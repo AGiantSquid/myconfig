@@ -167,14 +167,13 @@ fi
 
 alias d='docker'
 alias dpa='docker ps -a'
+alias dk='docker kill'
+alias dl='docker logs -f'
 function de() {
   docker exec -it "$1" bash
 }
 function des() {
   docker exec -it "$1" sh
-}
-function dk() {
-  docker kill "$1"
 }
 
 # GreenKey related stuff, add in secret key manually
