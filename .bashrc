@@ -158,6 +158,11 @@ if [ -d /c/Users ]; then
   alias home='cd /c/Users/$USER/; ls'
   alias green='cd /c/Users/$USER/GreenKey/; ls'
   alias scribe='cd /c/Users/$USER/GreenKey/scribe; ls'
+else
+  alias sublime='/usr/bin/subl'
+  alias home='cd; ls'
+  alias green='cd ~/GreenKey/; ls'
+  alias scribe='cd ~/GreenKey/scribe; ls'
 fi
 
 alias d='docker'
@@ -174,5 +179,5 @@ function dk() {
 
 # GreenKey related stuff, add in secret key manually
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export GKT_USERNAME=test
+export GKT_USERNAME=gkt
 export GKT_SECRETKEY=
