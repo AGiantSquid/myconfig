@@ -35,6 +35,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -158,11 +159,17 @@ if [ -d /c/Users ]; then
   alias home='cd /c/Users/$USER/; ls'
   alias green='cd /c/Users/$USER/GreenKey/; ls'
   alias scribe='cd /c/Users/$USER/GreenKey/scribe; ls'
+  alias discover='cd /c/Users/$USER/GreenKey/scribe/projects/discovery; ls'
+  alias dserve='cd /c/Users/$USER/GreenKey/scribe/projects/discovery/src/server; ls'
+  alias dtest='cd /c/Users/$USER/GreenKey/scribe/projects/discovery/src/tests; ls'
 else
   alias sublime='/usr/bin/subl'
   alias home='cd; ls'
   alias green='cd ~/GreenKey/; ls'
   alias scribe='cd ~/GreenKey/scribe; ls'
+  alias discover='cd ~/GreenKey/scribe/projects/discovery; ls'
+  alias dserve='cd ~/GreenKey/scribe/projects/discovery/src/server; ls'
+  alias dtest='cd ~/GreenKey/scribe/projects/discovery/src/tests; ls'
 fi
 
 alias d='docker'
@@ -176,7 +183,21 @@ function des() {
   docker exec -it "$1" sh
 }
 
+function pyclean() {
+    find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete;
+    find . -regex '^.*\.pytest_cache$' -type d -exec rm -rf {} \;
+}
+
 # GreenKey related stuff, add in secret key manually
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PYTHONPATH=${PYTHONPATH}:/c/Users/a/GreenKey/scribe/projects/scribekaldi/src/gktbase
+
+
+export GOROOT="/usr/local/go"
+export GOPATH="$HOME/go_projects"
+export GOBIN="$GOPATH/bin"
+export PATH=$PATH:$GOROOT/bin:$GOBIN
+
+export PRICE_DATABASE=True
 export GKT_USERNAME=gkt
 export GKT_SECRETKEY=
