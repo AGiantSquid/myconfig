@@ -1,18 +1,25 @@
 [user]
 	name = AGiantSquid
-	email = ashley@greenkeytech.com
-[diff]
-    tool = meld
-[difftool]
-    prompt = false
-[difftool "meld"]
-    cmd = meld "$LOCAL" "$REMOTE"
-[merge]
-    tool = meld
-[mergetool "meld"]
-    cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
-    keepBackup = false
-    prompt = false
+[alias]
+	co = checkout
+	c = commit
+	cb = c -b
+	b = branch
+	s = status
+	l = log
+	ri = rebase -i
 [core]
-    filemode = false
-    autocrlf = false
+	filemode = false
+	autocrlf = false
+
+# by default, assume personal settings
+[includeIf "gitdir:/c/**"]
+  path = .gitconfig-personal
+
+# for use on laptop, override default with gk stuff
+[includeIf "gitdir:~/greenkey/*"]
+  path = .gitconfig-work
+
+# for use on the beast, override default with gk stuff
+[includeIf "gitdir:/drive/**"]
+	path = .gitconfig-work

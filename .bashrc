@@ -35,7 +35,6 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -86,16 +85,20 @@ parse_git_branch() {
 # Pretty colors are set here
 if [ "$color_prompt" = yes ]; then
  PS1='${debian_chroot:+($debian_chroot)}'
- PS1="$PS1"'\n'                   # new line
- PS1="$PS1"'\[\033[1;30m\]'       # change to turquoise
- PS1="$PS1"'\u '                  # user<space>
- PS1="$PS1"'\[\033[95m\]'         # change to gray
- PS1="$PS1"'@debian `cat /etc/debian_version` '
- PS1="$PS1"'\[\033[33m\]'         # change to brownish yellow
- PS1="$PS1"'\w '                  # current working directory
- PS1="$PS1"'\[\033[01;32m\]$(parse_git_branch)\[\033[00m\]'
- PS1="$PS1"'\n'
- PS1="$PS1"'$ '                   # prompt: always $
+ PS1="$PS1"'\n'                                   # new line
+ PS1="$PS1"'\[\033[1;36m\]'                       # change to cyan
+ PS1="$PS1"'[$(hostname)] '                       # user<space>
+ PS1="$PS1"'\[\033[1;30m\]'                       # change to gray
+ PS1="$PS1"'\u '                                  # user<space>
+ PS1="$PS1"'\[\033[95m\]'                         # change to magenta
+ PS1="$PS1"'@debian `cat /etc/debian_version` '   # debian version
+ PS1="$PS1"'\[\033[33m\]'                         # change to brownish yellow
+ PS1="$PS1"'\w '                                  # current working directory
+ PS1="$PS1"'\[\033[01;32m\]'                      # change to green
+ PS1="$PS1"'$(parse_git_branch)'                  # git branch
+ PS1="$PS1"'\[\033[00m\]'                         # change to white
+ PS1="$PS1"'\n'                                   # new line
+ PS1="$PS1"'$ '                                   # prompt: always $
 else
  PS1='${debian_chroot:+($debian_chroot)}\u:\w$(parse_git_branch)\$ '
 fi
@@ -109,25 +112,17 @@ unset color_prompt force_color_prompt
 # fix color of 'other writable' directory
 LS_COLORS="ow=01;34;40" && export LS_COLORS
 
-
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-# needed to use git versioning on this file and others
-alias config='/usr/bin/git --git-dir=/home/$USER/.myconfig/ --work-tree=/home/$USER'
-
-
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+
+# Passwords, etc.
+if [ -f ~/.secrets ]; then
+    . ~/.secrets
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -140,64 +135,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-
-
-
-# Use these settings if using debian in WSL
-if [ -d /c/Users ]; then
-  export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-  export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
-
-  # For xming, displaying debian gui programs in windows host
-  export DISPLAY=localhost:0.0
-
-  # Needed to run docker commands from Windows
-  export DOCKER_HOST=localhost:2375
-
-  alias sublime='"/c/Program Files/Sublime Text 3/sublime_text.exe"'
-  alias home='cd /c/Users/$USER/; ls'
-  alias green='cd /c/Users/$USER/GreenKey/; ls'
-  alias scribe='cd /c/Users/$USER/GreenKey/scribe; ls'
-  alias discover='cd /c/Users/$USER/GreenKey/scribe/projects/discovery; ls'
-  alias dserve='cd /c/Users/$USER/GreenKey/scribe/projects/discovery/src/server; ls'
-  alias dtest='cd /c/Users/$USER/GreenKey/scribe/projects/discovery/src/tests; ls'
-else
-  alias sublime='/usr/bin/subl'
-  alias home='cd; ls'
-  alias green='cd ~/GreenKey/; ls'
-  alias scribe='cd ~/GreenKey/scribe; ls'
-  alias discover='cd ~/GreenKey/scribe/projects/discovery; ls'
-  alias dserve='cd ~/GreenKey/scribe/projects/discovery/src/server; ls'
-  alias dtest='cd ~/GreenKey/scribe/projects/discovery/src/tests; ls'
-fi
-
-alias d='docker'
-alias dpa='docker ps -a'
-alias dk='docker kill'
-alias dl='docker logs -f'
-function de() {
-  docker exec -it "$1" bash
-}
-function des() {
-  docker exec -it "$1" sh
-}
-
-function pyclean() {
-    find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete;
-    find . -regex '^.*\.pytest_cache$' -type d -exec rm -rf {} \;
-}
-
-# GreenKey related stuff, add in secret key manually
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export PYTHONPATH=${PYTHONPATH}:/c/Users/a/GreenKey/scribe/projects/scribekaldi/src/gktbase
-
-
-export GOROOT="/usr/local/go"
-export GOPATH="$HOME/go_projects"
-export GOBIN="$GOPATH/bin"
-export PATH=$PATH:$GOROOT/bin:$GOBIN
-
-export PRICE_DATABASE=True
-export GKT_USERNAME=gkt
-export GKT_SECRETKEY=
