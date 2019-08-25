@@ -120,10 +120,16 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# allow aliased commands to tab complete
+if [ -f ~/.bash_tab_completion ]; then
+    . ~/.bash_tab_completion
+fi
+
 # Passwords, etc.
 if [ -f ~/.secrets ]; then
     . ~/.secrets
 fi
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

@@ -50,6 +50,10 @@ function des() {
   docker exec -it "$1" sh
 }
 
+alias gc='git commit'
+alias gco='git checkout'
+
+
 # remove python garbage that gets generated
 pyclean () {
     sudo find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete;
