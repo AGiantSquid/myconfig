@@ -70,5 +70,5 @@ export GOBIN="$GOPATH/bin"
 export PATH=$PATH:$GOROOT/bin:$GOBIN
 
 # GreenKey related stuff
-export GIT_SSH=/drive/ashley/gitwrap.sh
+# export GIT_SSH=/drive/ashley/gitwrap.sh
 export PYTHONPATH=${PYTHONPATH}:/c/Users/a/GreenKey/scribe/projects/scribekaldi/src/gktbase
