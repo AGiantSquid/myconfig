@@ -79,26 +79,46 @@ fi
 
 # Add git branch if its present to PS1
 parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
 }
 
+# check if we are using a linux distro
+if [ "$OSTYPE" = "linux-gnu" ] && [ -f /etc/debian_version ]; then
+    # change to magenta
+    PLATFORM="\[\033[95m\]@debian `cat /etc/debian_version`"
+elif [ "$OSTYPE" = "linux-gnu" ]; then
+    # change to magenta
+    PLATFORM="\[\033[95m\]@linux"
+else
+    # change to red
+    PLATFORM="\[\033[31m\]@windows"
+fi
+
+# setup colors for prompt
+cyan='\[\033[1;36m\]'
+gray='\[\033[1;30m\]'
+magenta='\[\033[95m\]'
+yellow='\[\033[33m\]'
+green='\[\033[01;32m\]'
+white='\[\033[00m\]'
+
+echo "$(parse_git_branch)"
 # Pretty colors are set here
-if [ "$color_prompt" = yes ]; then
+if [ "$color_prompt" = yes ] ; then
  PS1='${debian_chroot:+($debian_chroot)}'
- PS1="$PS1"'\n'                                   # new line
- PS1="$PS1"'\[\033[1;36m\]'                       # change to cyan
- PS1="$PS1"'[$(hostname)] '                       # user<space>
- PS1="$PS1"'\[\033[1;30m\]'                       # change to gray
- PS1="$PS1"'\u '                                  # user<space>
- PS1="$PS1"'\[\033[95m\]'                         # change to magenta
- PS1="$PS1"'@debian `cat /etc/debian_version` '   # debian version
- PS1="$PS1"'\[\033[33m\]'                         # change to brownish yellow
- PS1="$PS1"'\w '                                  # current working directory
- PS1="$PS1"'\[\033[01;32m\]'                      # change to green
- PS1="$PS1"'$(parse_git_branch)'                  # git branch
- PS1="$PS1"'\[\033[00m\]'                         # change to white
- PS1="$PS1"'\n'                                   # new line
- PS1="$PS1"'$ '                                   # prompt: always $
+ PS1="$PS1"'\n'                        # new line
+ PS1="$PS1""$cyan"
+ PS1="$PS1""[$(hostname)] "            # hostname<space>
+ PS1="$PS1""$gray"
+ PS1="$PS1"'\u '                       # user<space>
+ PS1="$PS1""$PLATFORM "                # OS version
+ PS1="$PS1""$yellow"
+ PS1="$PS1"'\w '                       # current working directory
+ PS1="$PS1""$green"
+ PS1="$PS1"'`parse_git_branch`'        # git branch
+ PS1="$PS1""$white"
+ PS1="$PS1"'\n'                        # new line
+ PS1="$PS1"'$ '                        # prompt: always $
 else
  PS1='${debian_chroot:+($debian_chroot)}\u:\w$(parse_git_branch)\$ '
 fi

@@ -1,6 +1,3 @@
-[user]
-	email = ashley.e.shultz@gmail.com
-
 [diff]
 	tool = meld
 [difftool]

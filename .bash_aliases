@@ -11,19 +11,13 @@ if [ -d /c/Users ]; then
 
   alias sublime='"/c/Program Files/Sublime Text 3/sublime_text.exe"'
   alias home='cd /c/Users/$USER/; ls'
-  alias green='cd /c/Users/$USER/GreenKey/; ls'
-  alias scribe='cd /c/Users/$USER/GreenKey/scribe; ls'
-  alias discover='cd /c/Users/$USER/GreenKey/scribe/projects/discovery; ls'
 else
   alias sublime='/usr/bin/subl'
   alias home='cd; ls'
-  alias green='cd ~/GreenKey/; ls'
-  alias scribe='cd ~/GreenKey/scribe; ls'
-  alias discover='cd ~/GreenKey/scribe/projects/discovery; ls'
 fi
 
 # needed to use git versioning on this file and others
-alias config='/usr/bin/git --git-dir=/home/$USER/.myconfig/ --work-tree=/home/$USER'
+alias config='/usr/bin/git --git-dir=/$HOME/.myconfig/ --work-tree=$HOME'
 
 # file listing
 alias ll='ls -l'
@@ -61,7 +55,7 @@ pyclean () {
 }
 
 # node stuff
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # go stuff
 export GOROOT="/usr/local/go"
@@ -69,6 +63,7 @@ export GOPATH="$HOME/go_projects"
 export GOBIN="$GOPATH/bin"
 export PATH=$PATH:$GOROOT/bin:$GOBIN
 
-# GreenKey related stuff
-# export GIT_SSH=/drive/ashley/gitwrap.sh
-export PYTHONPATH=${PYTHONPATH}:/c/Users/a/GreenKey/scribe/projects/scribekaldi/src/gktbase
+#pyenv stuff
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
