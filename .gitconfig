@@ -15,12 +15,8 @@
 
 # by default, assume personal settings
 [includeIf "gitdir:/c/**"]
-  path = .gitconfig-personal
+  path = ~/.gitconfig-personal
 
-# for use on laptop, override default with gk stuff
-[includeIf "gitdir:~/greenkey/*"]
-  path = .gitconfig-work
-
-# for use on the beast, override default with gk stuff
-[includeIf "gitdir:/drive/**"]
-	path = .gitconfig-work
+# for use on laptop, override default with nbc stuff
+[includeIf "gitdir:~/nbc/*"]
+  path = ~/.gitconfig-work
