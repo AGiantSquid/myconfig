@@ -1,6 +1,6 @@
 
 [MASTER]
-indent-string='  '
-indent-after-paren=2
+indent-string='    '
+indent-after-paren=4
 max-line-length=120
 disable=C0103

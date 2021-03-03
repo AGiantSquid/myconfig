@@ -25,8 +25,8 @@ alias la='ls -A'
 
 # directory navigation
 alias ..='cd ..'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
 alias .....='cd ../../../../'
 
 # list open ports
