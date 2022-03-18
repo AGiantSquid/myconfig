@@ -86,7 +86,7 @@ parse_git_branch() {
 if [ "$OSTYPE" = "linux-gnu" ] && [ -f /etc/debian_version ]; then
     # change to magenta
     PLATFORM="\[\033[95m\]@debian `cat /etc/debian_version`"
-elif [ "$OSTYPE" = "linux-gnu" ]; then
+elif [ "${OSTYPE:0:9}" = "linux-gnu" ]; then
     # change to magenta
     PLATFORM="\[\033[95m\]@linux"
 else
