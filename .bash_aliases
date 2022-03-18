@@ -51,7 +51,8 @@ alias gco='git checkout'
 # remove python garbage that gets generated
 pyclean () {
     sudo find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete;
-    sudo find . -name ".pytest_cache" -type d -exec rm -r "{}" \;
+    sudo find . -name ".pytest_cache" -type d -prune -exec rm -r '{}' '+'
+    sudo find . -regex '^.*egg.info$' -type d -prune -exec rm -r '{}' '+'
 }
 
 # node stuff
