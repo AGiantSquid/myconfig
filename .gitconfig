@@ -1,14 +1,25 @@
 [user]
-	name = AGiantSquid
-	email = ashley.e.shultz@gmail.com
+	name = Ashley
+	email = ashley.shultz@canoo.com
 [alias]
+	ap = add -p
 	co = checkout
+	cod = checkout develop
 	c = commit
-	cb = c -b
+	cm = commit -m
+	cob = checkout -b feature/SWOPS-
+	cone = git commit --amend --no-edit
 	b = branch
 	s = status
+	ss = status -s
+	bmd = branch --merged develop
 	l = log
+	ll = log --oneline
 	ri = rebase -i
+	rd = rebase develop
+	d = diff
+	dc = diff --cached
+	submod = submodule update --init --recursive
 [core]
 	filemode = false
 	autocrlf = false
