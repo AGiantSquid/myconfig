@@ -9,10 +9,8 @@ if [ -d /c/Users ]; then
   # Needed to run docker commands from Windows
   export DOCKER_HOST=localhost:2375
 
-  alias sublime='"/c/Program Files/Sublime Text 3/sublime_text.exe"'
   alias home='cd /c/Users/$USER/; ls'
 else
-  alias sublime='/usr/bin/subl'
   alias home='cd; ls'
 fi
 
@@ -28,6 +26,7 @@ alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
 
 # list open ports
 alias ports='netstat -tulanp'
@@ -51,19 +50,22 @@ alias gco='git checkout'
 # remove python garbage that gets generated
 pyclean () {
     sudo find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete;
-    sudo find . -name ".pytest_cache" -type d -exec rm -r "{}" \;
+    sudo find . -name ".pytest_cache" -type d -prune -exec rm -r '{}' '+'
+    sudo find . -regex '^.*egg.info$' -type d -prune -exec rm -r '{}' '+'
 }
 
-# node stuff
-# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# uninstall all packages
+pip_purge () {
+  pip freeze | grep -v "^-e" | xargs pip uninstall -y
+}
 
-# go stuff
-export GOROOT="/usr/local/go"
-export GOPATH="$HOME/go_projects"
-export GOBIN="$GOPATH/bin"
-export PATH=$PATH:$GOROOT/bin:$GOBIN
-
-#pyenv stuff
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# make project current with dev
+git_fresh () {
+  git co develop &&
+  git pull &&
+  cd serverless_utils/ &&
+  git co develop &&
+  git pull &&
+  cd ../ &&
+  git branch --merged develop
+}

@@ -135,6 +135,11 @@ LS_COLORS="ow=01;34;40" && export LS_COLORS
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# environment variables
+if [ -f ~/.bash_env ]; then
+    . ~/.bash_env
+fi
+
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -151,17 +156,30 @@ if [ -f ~/.secrets ]; then
 fi
 
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
+# if ! shopt -oq posix; then
+#   if [ -f /usr/share/bash-completion/bash_completion ]; then
+#     . /usr/share/bash-completion/bash_completion
+#   elif [ -f /etc/bash_completion ]; then
+#     . /etc/bash_completion
+#   fi
+# fi
+
+
+if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
-  fi
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+function_exists() {
+    declare -f -F $1 > /dev/null
+    return $?
+}
+
+for al in $(git --list-cmds=alias); do
+    alias g$al="git $al"
+
+    # the following is to make auto-completion work, but I think I'm missing
+    # some git autocompletion file so the _git_aliased_command command doesn't work
+
+    # complete_func=_git_$(_git_aliased_command $al)
+    # function_exists "$complete_func" && __git_complete "g$al" "$complete_func"
+done
